@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Portfolio OS</title>
+  <meta name="description" content="An interactive portfolio disguised as an operating system." />
+  <meta name="theme-color" content="#0d0b1f" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%237c6cff'/><text x='50%25' y='56%25' font-size='36' font-family='Arial' font-weight='bold' text-anchor='middle' dominant-baseline='middle' fill='white'>M</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-wallpaper="galaxy" data-theme="dark">
+
+  <!-- Boot screen -->
+  <section id="boot" class="screen">
+    <div id="loader">
+      <div class="ld-wrap">
+        <svg class="ld-ring" viewBox="0 0 160 160" aria-hidden="true">
+          <defs>
+            <linearGradient id="ld-grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="var(--accent)" />
+              <stop offset="1" stop-color="var(--accent-2)" />
+            </linearGradient>
+          </defs>
+          <circle class="ld-track" cx="80" cy="80" r="74" />
+          <circle class="ld-bar" cx="80" cy="80" r="74" />
+        </svg>
+        <div class="ld-pulse"></div>
+        <div class="logo-mark ld-logo"></div>
+      </div>
+      <div class="ld-name"></div>
+      <div class="ld-meta"><span class="ld-status">Waking the dragon</span><span class="ld-pct">0%</span></div>
+    </div>
+    <button id="boot-skip" class="ghost-btn">Skip intro ›</button>
+  </section>
+
+  <!-- Login screen -->
+  <section id="login" class="screen hidden">
+    <div class="login-clock">
+      <div id="login-time">--:--</div>
+      <div id="login-date"></div>
+    </div>
+    <div class="login-card">
+      <div class="avatar avatar-lg" id="login-avatar"></div>
+      <h1 id="login-name"></h1>
+      <p id="login-role"></p>
+      <button id="login-btn" class="primary-btn">
+        <span>Enter</span><i class="ti ti-arrow-right"></i>
+      </button>
+      <p class="login-hint">Press <kbd>Enter</kbd> or click to log in · no password needed</p>
+      <button id="recruiter-from-login" class="link-btn">In a hurry? Open recruiter mode</button>
+    </div>
+  </section>
+
+  <!-- Desktop -->
+  <main id="desktop" class="screen hidden" aria-label="Desktop">
+    <div id="wallpaper" aria-hidden="true">
+      <div class="grain"></div>
+    </div>
+    <div id="desktop-widget" aria-hidden="true">
+      <div id="dw-time">--:--</div>
+      <div id="dw-date"></div>
+      <div id="dw-greet"></div>
+    </div>
+    <div id="icons" role="list"></div>
+    <div id="windows"></div>
+    <div id="snap-preview" class="hidden"></div>
+    <div id="selection-box" class="hidden"></div>
+  </main>
+
+  <!-- Taskbar -->
+  <nav id="taskbar" class="hidden" aria-label="Taskbar">
+    <button id="start-btn" class="tb-btn" aria-label="Start menu"><span class="logo-mark sm">M</span></button>
+    <div id="tb-apps"></div>
+    <div class="tb-spacer"></div>
+    <div id="tray">
+      <button class="tray-btn" id="tray-trophy" title="Achievements"><i class="ti ti-trophy"></i><span id="ach-count">0</span></button>
+      <button class="tray-btn" id="tray-sound" title="Toggle sounds"><i class="ti ti-volume"></i></button>
+      <button class="tray-btn" id="tray-recruiter" title="Recruiter mode"><i class="ti ti-briefcase"></i></button>
+      <div id="tray-clock"><span id="tc-time">--:--</span><span id="tc-date"></span></div>
+    </div>
+  </nav>
+
+  <!-- Start menu -->
+  <div id="start-menu" class="hidden" role="dialog" aria-label="Start menu">
+    <div class="sm-search"><i class="ti ti-search"></i><input id="sm-search" placeholder="Search apps and projects…" autocomplete="off" /></div>
+    <div class="sm-label">Apps</div>
+    <div id="sm-apps"></div>
+    <div class="sm-label">Projects</div>
+    <div id="sm-projects"></div>
+    <div class="sm-footer">
+      <div class="sm-user"><div class="avatar avatar-sm" id="sm-avatar"></div><span id="sm-name"></span></div>
+      <div class="sm-power">
+        <button title="Lock" data-power="lock"><i class="ti ti-lock"></i></button>
+        <button title="Restart" data-power="restart"><i class="ti ti-refresh"></i></button>
+        <button title="Shut down" data-power="shutdown"><i class="ti ti-power"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div id="context-menu" class="hidden" role="menu"></div>
+  <div id="toasts" aria-live="polite"></div>
+
+  <!-- Blue screen easter egg -->
+  <section id="bsod" class="screen hidden">
+    <div class="bsod-inner">
+      <div class="bsod-face">:(</div>
+      <p>Your portfolio ran into a problem because someone typed <code>rm -rf /</code>. Bold move.</p>
+      <p>We're just collecting some error info, and then we'll restart for you.</p>
+      <p class="bsod-pct"><span id="bsod-pct">0</span>% complete</p>
+      <p class="bsod-small">Stop code: CURIOSITY_LEVEL_EXCEEDED</p>
+    </div>
+  </section>
+
+  <!-- Shutdown screen -->
+  <section id="shutdown" class="screen hidden">
+    <p>It's now safe to close this tab.</p>
+    <button class="ghost-btn" id="power-on"><i class="ti ti-power"></i> Power on</button>
+  </section>
+
+  <!-- Recruiter mode -->
+  <section id="recruiter" class="hidden" aria-label="Recruiter mode"></section>
+
+  <script src="js/config.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/wallpaper.js"></script>
+  <script src="js/wm.js"></script>
+  <script src="js/apps.js"></script>
+  <script src="js/apps-fun.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
