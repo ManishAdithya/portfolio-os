@@ -27,6 +27,7 @@
   $("#login-name").textContent = P.name;
   $("#login-role").textContent = P.role;
   $("#sm-name").textContent = P.name;
+  if (OS.tapToOpen()) $(".login-hint").textContent = "Tap anywhere to log in · no password needed";
   Ach.render();
 
   const clock = () => {
@@ -102,7 +103,7 @@
       if (firstLogin && !WM.wins.size) {
         firstLogin = false;
         setTimeout(() => WM.open("readme"), 700);
-        setTimeout(() => toast("Welcome!", isMobile() ? "Tap the icons to explore. There are 14 achievements to find." : "Double-click icons to explore. There are 14 achievements hidden around.", { icon: "sparkles", ms: 5000 }), 1400);
+        setTimeout(() => toast("Welcome!", OS.tapToOpen() ? "Tap icons to open them, long-press for more options. 14 achievements to find." : "Double-click icons to explore. There are 14 achievements hidden around.", { icon: "sparkles", ms: 5000 }), 1400);
       }
     }, 600);
   }
@@ -125,10 +126,13 @@
       const app = WM.apps[id] || { icon: "briefcase", color: "#0ea5e9" };
       const b = h(`<button class="d-icon" role="listitem" data-app="${id}" style="animation-delay:${200 + i * 45}ms"><span class="app-ico" style="--ico:${app.color}"><i class="ti ti-${app.icon}"></i></span><span class="d-lbl">${esc(label)}</span></button>`);
       const go = () => { b.classList.remove("wiggle"); id === "recruiter" ? recruiter(true) : WM.open(id); };
-      b.addEventListener("click", (e) => { e.stopPropagation(); select([b]); if (isMobile()) go(); else Sound.click(); });
-      b.addEventListener("dblclick", () => { if (!isMobile()) go(); });
+      // touchscreens: one tap opens (double-tap would zoom); mouse: double-click opens
+      b.addEventListener("click", (e) => { e.stopPropagation(); select([b]); if (OS.tapToOpen()) go(); else Sound.click(); });
+      b.addEventListener("dblclick", () => { if (!OS.tapToOpen()) go(); });
       b.addEventListener("keydown", (e) => { if (e.key === "Enter") go(); });
-      b.addEventListener("contextmenu", (e) => { e.preventDefault(); e.stopPropagation(); select([b]); WM.contextMenu(e.clientX, e.clientY, [{ icon: "external-link", label: "Open", action: go }]); });
+      const menu = (x, y) => { select([b]); WM.contextMenu(x, y, [{ icon: "external-link", label: "Open", action: go }]); };
+      b.addEventListener("contextmenu", (e) => { e.preventDefault(); e.stopPropagation(); menu(e.clientX, e.clientY); });
+      OS.onLongPress(b, (_, x, y) => menu(x, y));
       wrap.appendChild(b);
     });
   }
@@ -154,7 +158,12 @@
   $("#desktop").addEventListener("contextmenu", (e) => {
     if (e.target.closest(".win")) return;
     e.preventDefault();
-    WM.contextMenu(e.clientX, e.clientY, [
+    desktopMenu(e.clientX, e.clientY);
+  });
+  // long-press on empty desktop = right-click on touchscreens
+  OS.onLongPress($("#desktop"), (target, x, y) => { if (!target.closest(".win, .d-icon")) desktopMenu(x, y); });
+  function desktopMenu(x, y) {
+    WM.contextMenu(x, y, [
       { icon: "terminal-2", label: "Open Terminal here", action: () => WM.open("terminal") },
       { icon: "photo", label: "Next wallpaper", action: OS.nextWallpaper },
       { icon: "refresh", label: "Refresh", action: () => $$(".d-icon").forEach((i, n) => setTimeout(() => { i.classList.remove("wiggle"); void i.offsetWidth; i.classList.add("wiggle"); }, n * 30)) },
@@ -163,7 +172,7 @@
       { icon: "settings", label: "Personalize", action: () => WM.open("settings") },
       { icon: "briefcase", label: "Recruiter mode", action: () => recruiter(true) }
     ]);
-  });
+  }
 
   /* ---------- Start menu ---------- */
   const START_APPS = ["readme", "projects", "skills", "terminal", "mail", "music", "paint", "snake", "achievements", "settings", "bin"];

@@ -250,7 +250,7 @@
     m.classList.remove("hidden");
     const r = m.getBoundingClientRect();
     m.style.left = Math.min(x, innerWidth - r.width - 8) + "px";
-    m.style.top = Math.min(y, innerHeight - r.height - 8) + "px";
+    m.style.top = Math.max(8, Math.min(y, innerHeight - ($("#taskbar").offsetHeight || 0) - r.height - 8)) + "px";
   }
 
   addEventListener("resize", () => {

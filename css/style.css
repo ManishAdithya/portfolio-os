@@ -175,7 +175,7 @@ kbd {
 #wp-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 /* soft shade behind the icon column so labels stay readable on bright scenes */
 #wallpaper::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(0, 0, 0, .38), rgba(0, 0, 0, 0) 22%); }
-@media (max-width: 760px) { #wallpaper::after { background: linear-gradient(180deg, rgba(0, 0, 0, .35), rgba(0, 0, 0, 0) 55%); } }
+@media (max-width: 760px), (hover: none) and (pointer: coarse) and (max-width: 1024px) { #wallpaper::after { background: linear-gradient(180deg, rgba(0, 0, 0, .35), rgba(0, 0, 0, 0) 55%); } }
 .grain {
   position: absolute; inset: 0; opacity: .05; mix-blend-mode: overlay; pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -595,31 +595,107 @@ body[data-theme="light"] .term { background: #14122a; }
 .rc-card p { margin: 0 0 10px; color: var(--text-2); font-size: 13px; line-height: 1.6; }
 .rc-skills { display: flex; flex-wrap: wrap; gap: 6px; }
 
+/* ============ Touch ============ */
+/* no double-tap zoom (taps open things instead); pinch zoom still works */
+html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; }
+body { -webkit-touch-callout: none; }
+@media (hover: none), (pointer: coarse) {
+  .d-icon:hover, .sm-app:hover, .folder-item:hover, .ex-card:hover { transform: none; }
+}
+
 /* ============ Mobile ============ */
-@media (max-width: 760px) {
-  :root { --taskbar-h: 64px; }
-  #desktop-widget { left: 0; right: 0; top: 26px; text-align: center; }
-  #dw-time { font-size: 48px; }
+/* keep in sync with MOBILE_Q in js/core.js */
+@media (max-width: 760px), (hover: none) and (pointer: coarse) and (max-width: 1024px) {
+  :root { --taskbar-h: 72px; }
+
+  /* home screen */
+  #desktop-widget { left: 0; right: 0; top: 34px; text-align: center; }
+  #dw-time { font-size: 64px; }
+  #dw-date { font-size: 16px; }
   #icons {
-    left: 0; right: 0; top: 150px; padding: 0 12px; grid-auto-flow: row;
-    grid-template-columns: repeat(4, 1fr); grid-template-rows: none; grid-auto-rows: 96px; grid-auto-columns: auto; gap: 4px; align-content: start;
+    left: 0; right: 0; top: 178px; bottom: calc(var(--taskbar-h) + 12px); padding: 0 14px; grid-auto-flow: row;
+    grid-template-columns: repeat(4, 1fr); grid-template-rows: none; grid-auto-rows: 118px; grid-auto-columns: auto; gap: 6px; align-content: start;
   }
-  .d-icon { width: 100%; }
-  .d-icon .d-lbl { font-size: 11px; word-break: normal; }
+  .d-icon { width: 100%; height: 112px; gap: 9px; }
+  .d-icon .app-ico { width: 64px; height: 64px; border-radius: 19px; font-size: 32px; }
+  .d-icon .d-lbl { font-size: 13px; font-weight: 500; word-break: normal; }
   .d-icon:hover { background: none; }
+
+  /* taskbar */
+  .tb-btn { height: 52px; min-width: 52px; border-radius: 14px; }
+  #start-btn .logo-mark.sm { width: 38px; height: 38px; }
+  .tb-app .app-ico.sm { width: 30px; height: 30px; border-radius: 9px; font-size: 18px; }
+  .tb-app .lbl { display: none; }
+  .tray-btn { height: 46px; min-width: 46px; font-size: 22px; }
+  #ach-count { font-size: 14px; }
+  #tray-clock { font-size: 15px; }
+  #tray-clock #tc-date { display: none; }
+  #tray-recruiter { display: none; }
+
+  /* windows: full screen, finger-sized controls, larger text */
   .win { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; border-radius: 0; border: 0; }
   .win.opening { animation: mobileOpen .4s var(--ease-out) both; }
   .win.closing { animation: mobileClose .25s ease-in forwards; }
   .resize { display: none; }
+  .win-titlebar { height: 56px; padding: 0 6px 0 16px; }
+  .win-title { font-size: 16px; gap: 11px; }
+  .win-title .app-ico.sm { width: 28px; height: 28px; border-radius: 8px; font-size: 17px; }
+  .win-controls button { width: 46px; height: 44px; font-size: 22px; border-radius: 12px; }
   .win-controls .max { display: none; }
-  .tb-app .lbl { display: none; }
-  #tray-clock #tc-date { display: none; }
-  #tray-recruiter { display: none; }
+  .app-pad { padding: 20px 18px; }
+  .md p, .muted { font-size: 15px; }
+  .readme-head h1 { font-size: 24px; }
+  .md h2 { font-size: 17px; }
+  .fact small { font-size: 12px; }
+  .fact b { font-size: 15px; }
+  .tl-item b { font-size: 16px; }
+  .tl-item ul { font-size: 15px; }
+  .chip { font-size: 13px; padding: 5px 11px; }
+  .btn { font-size: 15px; padding: 11px 16px; border-radius: 12px; }
+  .tiny { font-size: 13px; }
+
   .ex-side { display: none; }
-  .tm-row { grid-template-columns: 1fr 80px 40px; }
-  #start-menu { left: 8px; right: 8px; width: auto; }
+  .ex-bar button { width: 40px; height: 40px; font-size: 19px; }
+  .ex-path { height: 38px; font-size: 13px; }
+  .ex-grid { grid-template-columns: 1fr 1fr; }
+  .ex-card b { font-size: 15px; }
+  .ex-card small { font-size: 13px; }
+  .proj-hero h2 { font-size: 24px; }
+  .proj-list li { font-size: 15px; }
+
+  .tm-tabs button { font-size: 15px; padding: 9px 14px; }
+  .tm-row { grid-template-columns: 1fr 80px 44px; font-size: 15px; padding: 9px 8px; }
+  .tm-row .pct { font-size: 13px; }
+  .term { font-size: 14px; }
+  .term-input { font-size: 16px; } /* 16px+ stops iOS zooming in when the field gets focus */
+  .mail-field { font-size: 15px; min-height: 52px; }
+  .mail-field input { font-size: 16px; height: 52px; }
+  .mail textarea { font-size: 16px; }
+  .notepad pre { font-size: 14px; }
+  .bin-list .bin-item, .track, .toggle-row { font-size: 15px; padding: 12px; }
+  .folder-item { font-size: 14px; }
+  .folder-item .app-ico { width: 58px; height: 58px; font-size: 28px; }
+  .ach b { font-size: 15px; }
+  .ach small { font-size: 13px; }
+
+  /* menus */
+  #start-menu { left: 8px; right: 8px; width: auto; padding: 18px; }
+  .sm-search { height: 48px; }
+  .sm-search input { font-size: 16px; }
+  #sm-apps { grid-template-columns: repeat(4, 1fr); }
+  .sm-app { font-size: 13px; padding: 12px 2px; }
+  .sm-app .app-ico.md { width: 46px; height: 46px; font-size: 24px; border-radius: 13px; }
   #sm-projects { grid-template-columns: 1fr; }
+  .sm-proj b { font-size: 15px; }
+  .sm-proj small { font-size: 13px; }
+  .sm-power button { width: 46px; height: 46px; font-size: 22px; }
+  #context-menu { min-width: 230px; }
+  .cm-item { font-size: 16px; padding: 13px 14px; }
+  .cm-item i { font-size: 19px; }
+
   .toast { width: 100%; }
+  .toast b { font-size: 14px; }
+  .toast small { font-size: 13px; }
   #bsod p { font-size: 17px; }
   .bsod-face { font-size: 80px; }
 }

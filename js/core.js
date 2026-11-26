@@ -11,7 +11,34 @@
     return t.content.firstElementChild;
   }
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const isMobile = () => window.matchMedia("(max-width: 760px)").matches;
+  // Phone layout: narrow screens, plus touch devices up to tablet width (some phones report a wide viewport).
+  // Keep in sync with the mobile @media query in style.css.
+  const MOBILE_Q = "(max-width: 760px), (hover: none) and (pointer: coarse) and (max-width: 1024px)";
+  const isMobile = () => window.matchMedia(MOBILE_Q).matches;
+  // On any touchscreen one tap opens things: double-tap is the browser's zoom gesture there.
+  const isTouch = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
+  const tapToOpen = () => isMobile() || isTouch();
+
+  // Long-press = right-click on touchscreens. cb(target, x, y). The click that follows the press is swallowed.
+  function onLongPress(el, cb, ms = 520) {
+    let timer = null, sx = 0, sy = 0, fired = false;
+    const cancel = () => { clearTimeout(timer); timer = null; };
+    el.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse") return;
+      fired = false; sx = e.clientX; sy = e.clientY; cancel();
+      const target = e.target;
+      timer = setTimeout(() => {
+        timer = null; fired = true;
+        try { navigator.vibrate && navigator.vibrate(12); } catch {}
+        cb(target, sx, sy);
+      }, ms);
+    });
+    el.addEventListener("pointermove", (e) => { if (timer && Math.hypot(e.clientX - sx, e.clientY - sy) > 10) cancel(); });
+    ["pointerup", "pointercancel"].forEach((t) => el.addEventListener(t, cancel));
+    el.addEventListener("click", (e) => { if (fired) { fired = false; e.stopPropagation(); e.preventDefault(); } }, true);
+    // Android also fires a native contextmenu on long-press; our timer already handled it.
+    el.addEventListener("contextmenu", (e) => { if (fired || timer) { e.preventDefault(); e.stopPropagation(); } }, true);
+  }
   const initials = (name) => name.split(/\s+/).map((w) => w[0]).slice(0, 2).join("").toUpperCase();
 
   function paintImg(el, src, fallback) {
@@ -192,5 +219,5 @@
     render() { const c = $("#ach-count"); if (c) c.textContent = `${this.unlocked.size}/${ACHIEVEMENTS.length}`; }
   };
 
-  window.OS = Object.assign(window.OS || {}, { P, $, $$, h, esc, isMobile, initials, paintAvatar, paintLogo, store, fmtTime, fmtDate, greeting, Sound, toast, confetti, Ach });
+  window.OS = Object.assign(window.OS || {}, { P, $, $$, h, esc, isMobile, isTouch, tapToOpen, onLongPress, initials, paintAvatar, paintLogo, store, fmtTime, fmtDate, greeting, Sound, toast, confetti, Ach });
 })();

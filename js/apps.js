@@ -78,7 +78,7 @@
         if (!projId) {
           path.innerHTML = `<i class="ti ti-device-desktop"></i> ~ / projects`;
           ctx.setTitle("Projects");
-          content.innerHTML = `<div class="tiny" style="margin-bottom:10px">${P.projects.length} items · ${OS.isMobile() ? "tap" : "double-click"} to open</div>
+          content.innerHTML = `<div class="tiny" style="margin-bottom:10px">${P.projects.length} items · ${OS.tapToOpen() ? "tap" : "double-click"} to open</div>
             <div class="ex-grid">${P.projects.map((p, i) => `
               <button class="ex-card" data-id="${esc(p.id)}" style="--c:${esc(p.color)};animation-delay:${i * 60}ms">
                 <div class="ex-thumb"><i class="ti ti-${esc(p.icon)}"></i></div>
@@ -86,7 +86,7 @@
               </button>`).join("")}</div>`;
           $$(".ex-card", content).forEach((c) => {
             c.addEventListener("dblclick", () => show(c.dataset.id));
-            c.addEventListener("click", (e) => { if (OS.isMobile() || e.detail === 0) show(c.dataset.id); });
+            c.addEventListener("click", (e) => { if (OS.tapToOpen() || e.detail === 0) show(c.dataset.id); });
             c.addEventListener("keydown", (e) => { if (e.key === "Enter") show(c.dataset.id); });
           });
           return;
@@ -416,7 +416,7 @@
         $$(".bin-item", body).forEach((b) => {
           const go = () => { const f = P.badCode[b.dataset.i]; open("notepad", { title: f.name, content: f.content }); };
           b.addEventListener("dblclick", go);
-          b.addEventListener("click", () => { if (OS.isMobile()) go(); });
+          b.addEventListener("click", () => { if (OS.tapToOpen()) go(); });
         });
         $(".empty", body).addEventListener("click", () => {
           Sound.error();
