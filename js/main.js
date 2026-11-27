@@ -253,13 +253,32 @@
   }
   OS.recruiter = recruiter;
 
-  /* ---------- Keyboard ---------- */
+  /* ---------- Konami code: ↑↑↓↓←→←→BA on a keyboard, or the same as swipes + two taps on a touchscreen ---------- */
   const KONAMI = ["arrowup", "arrowup", "arrowdown", "arrowdown", "arrowleft", "arrowright", "arrowleft", "arrowright", "b", "a"];
   let kIdx = 0;
-  document.addEventListener("keydown", (e) => {
-    const k = e.key.toLowerCase();
+  function konamiStep(k) {
     kIdx = k === KONAMI[kIdx] ? kIdx + 1 : k === KONAMI[0] ? 1 : 0;
     if (kIdx === KONAMI.length) { kIdx = 0; Ach.unlock("konami"); confetti(); toast("+30 lives", "The Konami code still works in 2026.", { icon: "device-gamepad-2", color: "#eab308" }); }
+  }
+
+  // Swipes on the home screen (not inside windows) count as arrow keys; after the 8 swipes, two taps count as B then A.
+  let swipe = null;
+  $("#desktop").addEventListener("pointerdown", (e) => {
+    swipe = e.pointerType === "mouse" || e.target.closest(".win") ? null : { x: e.clientX, y: e.clientY, t: performance.now() };
+  });
+  $("#desktop").addEventListener("pointercancel", () => (swipe = null));
+  $("#desktop").addEventListener("pointerup", (e) => {
+    if (!swipe) return;
+    const dx = e.clientX - swipe.x, dy = e.clientY - swipe.y, dt = performance.now() - swipe.t, dist = Math.hypot(dx, dy);
+    swipe = null;
+    if (dist >= 40 && dt < 800) konamiStep(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? "arrowright" : "arrowleft") : (dy > 0 ? "arrowdown" : "arrowup"));
+    else if (dist < 12 && dt < 400) konamiStep(kIdx >= 8 ? KONAMI[kIdx] : "tap"); // a plain tap only counts as B / A at the end
+  });
+
+  /* ---------- Keyboard ---------- */
+  document.addEventListener("keydown", (e) => {
+    const k = e.key.toLowerCase();
+    konamiStep(k);
 
     if (!$("#boot").classList.contains("hidden") && (k === "escape" || k === " " || k === "enter")) { e.preventDefault(); toLogin(); return; }
     if (!$("#login").classList.contains("hidden") && (k === "enter" || k === " ") && !e.target.closest("#recruiter-from-login")) { e.preventDefault(); login(); return; }

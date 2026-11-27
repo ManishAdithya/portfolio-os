@@ -597,7 +597,9 @@ body[data-theme="light"] .term { background: #14122a; }
 
 /* ============ Touch ============ */
 /* no double-tap zoom (taps open things instead); pinch zoom still works */
-html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; }
+html, body { touch-action: manipulation; -webkit-text-size-adjust: 100%; overscroll-behavior: none; }
+/* home-screen swipes belong to the page (Konami gesture), not to browser pan / pull-to-refresh; windows still scroll */
+#wallpaper, #icons, #desktop-widget { touch-action: none; }
 body { -webkit-touch-callout: none; }
 @media (hover: none), (pointer: coarse) {
   .d-icon:hover, .sm-app:hover, .folder-item:hover, .ex-card:hover { transform: none; }
