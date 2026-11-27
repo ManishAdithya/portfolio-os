@@ -59,7 +59,7 @@
     bar.style.strokeDashoffset = LEN; pct.textContent = "0%"; status.textContent = BOOT_STEPS[0][1];
     void root.offsetWidth; root.classList.add("run");
 
-    const startAt = performance.now() + 900, dur = 1900;
+    const startAt = performance.now() + 900, dur = 4000; // ring fill time; whole loader ≈ 6 s
     let shown = -1;
     const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
     const frame = (now) => {
@@ -72,8 +72,8 @@
       if (step[0] !== shown) { shown = step[0]; status.textContent = step[1]; }
       if (t < 1) { bootRaf = requestAnimationFrame(frame); return; }
       root.classList.add("done");
-      later(() => root.classList.add("leaving"), 550);
-      later(toLogin, 1200);
+      later(() => root.classList.add("leaving"), 800); // hold on "Ready" a moment before zooming out
+      later(toLogin, 1450);
     };
     bootRaf = requestAnimationFrame(frame);
   }
