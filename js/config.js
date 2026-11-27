@@ -76,14 +76,19 @@ window.PORTFOLIO = {
     {
       id: "preptrack",
       title: "PrepTrack",
-      tagline: "Student management and progress tracking",
-      description: "A full-stack platform where students track academic progress, access study materials, join discussions and compete on leaderboards. Admins manage student data, branches, announcements and academic resources from their own dashboard.",
-      tech: ["React.js", "Axios", "Full Stack"],
+      tagline: "Study hub for a college class, run by its students",
+      description: "A study platform for one college class: notes, slides, previous year question papers and exam dates in one place, shared and reviewed by the students themselves. Live for the EEE 2024 batch at Amrita, with separate student, class representative (CR) and owner dashboards, a class forum and an exam countdown. Installable as an app (PWA) on laptops and phones.",
+      tech: ["React", "Vite", "Tailwind CSS", "Node.js", "Express", "MongoDB", "JWT", "Vercel Blob"],
       year: "2026",
       color: "#ff7a59",
       icon: "school",
-      highlights: ["Separate student and admin dashboards", "Leaderboards and discussions", "Announcements and resource management"],
-      links: { live: "", code: "" }
+      highlights: [
+        "Community review: uploads go live after CR approval or 5 Helpful votes",
+        "XP leaderboard, class forum and exam countdown",
+        "Roll-number sign-in with JWT, bcrypt and account lockout",
+        "Installable PWA, files stored on Vercel Blob"
+      ],
+      links: { live: "https://preptrack-app.vercel.app", code: "https://github.com/ManishAdithya/PrepTrack" }
     }
   ],
 
