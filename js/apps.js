@@ -300,7 +300,9 @@
           print(`Nice try. ${esc(user)} is not in the sudoers file. This incident will be reported.`, "err");
         },
         rm: (a) => {
-          if (a.join(" ").includes("-rf") && (a.includes("/") || a.includes("/*"))) {
+          // any recursive + force delete crashes the OS: rm -rf, rm -rf /, rm -fr *, rm -r -f ~ ...
+          const flags = a.filter((x) => x.startsWith("-")).join("").toLowerCase();
+          if (flags.includes("r") && flags.includes("f")) {
             print("Deleting everything…", "err"); setTimeout(() => OS.bsod(), 900); return;
           }
           print("rm: permission denied (this portfolio is read-only, for your safety)", "err");
