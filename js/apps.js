@@ -173,6 +173,11 @@
                 </div>
               </div>
             </a>`).join("")}</div>
+          <a class="blog-more" href="${esc(BLOG.url)}" target="_blank" rel="noopener">
+            <span class="app-ico md" style="--ico:#10b981"><i class="ti ti-brand-medium"></i></span>
+            <span><b>Want to read more from 5h3nr0n?</b><small>New write-ups on malware analysis, CTFs and Android hacking go up on Medium first. Follow along there.</small></span>
+            <span class="btn accent">Visit Medium <i class="ti ti-arrow-up-right"></i></span>
+          </a>
         </div>`;
       $$(".blog-img img", body).forEach((img) => img.addEventListener("error", () => img.parentElement.remove()));
       $$(".blog-filter [data-kind]", body).forEach((b) => b.addEventListener("click", () => {
