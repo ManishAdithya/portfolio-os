@@ -9,6 +9,26 @@ Everything (name, bio, projects, skills, experience, links, recycle-bin jokes) l
 - Photo: put an image in `assets/` and set `avatar: "assets/me.jpg"`.
 - Project icons use [Tabler icon](https://tabler.io/icons) names, like `rocket` or `brand-github`.
 
+## Wallpapers
+
+The live wallpapers are looping videos in `assets/wallpapers/`, listed at the top of `js/wallpaper.js`. Each one has:
+
+| File | Used for |
+|---|---|
+| `<id>-1080.mp4` | most computers (1920x1080) |
+| `<id>-1440.mp4` | large or high-resolution screens (2560x1440), only when the source video is at least that big |
+| `<id>-portrait.mp4` | phones held upright: a tall slice of the source at full resolution |
+| `<id>.jpg`, `<id>-portrait.jpg` | stills for the lock screen, while the video loads, and with Reduce motion on |
+| `<id>-thumb.jpg` | the picker in Settings |
+
+To add one, encode it with ffmpeg the same way. Crop the bottom 2.6% (this removes a recorder's watermark; skip it if there is none), keep quality high, since star fields smear easily, and drop the audio:
+
+```powershell
+ffmpeg -i source.mp4 -an -vf "crop=trunc(iw*0.974/2)*2:trunc(ih*0.974/2)*2:trunc(iw*0.013/2)*2:0,scale=1920:1080:flags=lanczos,fps=30" -c:v libx264 -preset slow -tune grain -crf 19 -pix_fmt yuv420p -movflags +faststart myid-1080.mp4
+```
+
+Use `scale=2560:1440` and `-crf 20` for the 1440 file. For the portrait file, replace the crop with a 9:19.5 slice centred on the subject.
+
 ## Run locally
 
 ```powershell

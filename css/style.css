@@ -177,8 +177,8 @@ kbd {
 #desktop.entering #wallpaper { animation: wallIn 1.2s var(--ease-out); }
 @keyframes wallIn { from { transform: scale(1.15); filter: blur(20px); opacity: 0; } }
 #wallpaper { position: absolute; inset: 0; overflow: hidden; background: #020206; }
-/* scaled up slightly: room for the parallax, and it crops the recorder's corner watermark */
-.wp-layer { position: absolute; inset: 0; transform: scale(1.07); will-change: transform; }
+/* scaled up slightly to leave room for the parallax at the edges */
+.wp-layer { position: absolute; inset: 0; transform: scale(1.03); will-change: transform; }
 .wp-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; background: center / cover no-repeat; opacity: 0; transition: opacity .9s ease; }
 .wp-video.on { opacity: 1; }
 /* shade behind the icon column and the taskbar so labels stay readable on bright scenes */
