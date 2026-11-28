@@ -107,7 +107,7 @@ window.PORTFOLIO = {
         "Runs on free tiers: Render (512 MB) plus an optional Modal OCR helper",
         "Email sign-up with Neon Auth, private subjects per account"
       ],
-      links: { demo: "assets/pyq-lens-demo.mp4", live: "https://pyq-lens.onrender.com", code: "https://github.com/ManishAdithya/pyq-lens" }
+      links: { demo: "assets/pyq-lens-demo.gif", live: "https://pyq-lens.onrender.com", code: "https://github.com/ManishAdithya/pyq-lens" }
     }
   ],
 
