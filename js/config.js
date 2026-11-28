@@ -70,7 +70,7 @@ window.PORTFOLIO = {
       color: "#7c6cff",
       icon: "language",
       highlights: ["Parallel language and dialect detection", "Token-by-token streaming with multi-turn memory", "Structured JSON insights and automated evaluation"],
-      links: { live: "", code: "https://github.com/ManishAdithya/Bhashify" }
+      links: { live: "https://bhashify.vercel.app/", code: "https://github.com/ManishAdithya/Bhashify" }
     },
     {
       id: "preptrack",
