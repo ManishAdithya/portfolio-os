@@ -61,8 +61,8 @@ window.PORTFOLIO = {
       links: { live: "", code: "https://github.com/ManishAdithya/BVI-navigation" }
     },
     {
-      id: "ai-romanizer",
-      title: "AI Romanizer",
+      id: "bhashify",
+      title: "Bhashify",
       tagline: "LLM-powered Romanized Telugu understanding",
       description: "A language assistant that understands informal, dialect-rich Telugu written in English letters (Telglish), including inconsistent spellings, mixed English and regional dialects. It has five modes: English translation, word-by-word explanation, Telugu script conversion, conversation and customer support.",
       tech: ["Python", "LLMs", "GPT-OSS-120B", "Groq API", "Ollama", "SSE", "Docker"],
@@ -70,7 +70,7 @@ window.PORTFOLIO = {
       color: "#7c6cff",
       icon: "language",
       highlights: ["Parallel language and dialect detection", "Token-by-token streaming with multi-turn memory", "Structured JSON insights and automated evaluation"],
-      links: { live: "", code: "" }
+      links: { live: "", code: "https://github.com/ManishAdithya/Bhashify" }
     },
     {
       id: "preptrack",
