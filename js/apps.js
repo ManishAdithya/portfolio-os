@@ -113,8 +113,13 @@
         $("[data-ask]", content)?.addEventListener("click", () => open("mail"));
         $("[data-demo]", content)?.addEventListener("click", () => {
           const box = $(".proj-demo", content);
-          if (!box.firstChild) box.innerHTML = `<img src="${esc(p.links.demo)}" alt="${esc(p.title)} demo">`;
+          const isVideo = /\.(mp4|webm|mov)$/i.test(p.links.demo);
+          if (!box.firstChild) box.innerHTML = isVideo
+            ? `<video src="${esc(p.links.demo)}" controls autoplay muted playsinline preload="metadata" aria-label="${esc(p.title)} demo"></video>`
+            : `<img src="${esc(p.links.demo)}" alt="${esc(p.title)} demo">`;
           box.classList.toggle("hidden");
+          const vid = $("video", box);
+          if (vid) box.classList.contains("hidden") ? vid.pause() : vid.play().catch(() => {});
           if (!box.classList.contains("hidden")) box.scrollIntoView({ behavior: "smooth", block: "nearest" });
         });
       }

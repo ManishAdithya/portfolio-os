@@ -38,7 +38,7 @@ self.addEventListener("fetch", (e) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
-  if (/\.(gif|mp4|webm)$/i.test(url.pathname)) return;
+  if (/\.(gif|mp4|webm|mov)$/i.test(url.pathname)) return;
   e.respondWith(
     fetch(req)
       .then((res) => {

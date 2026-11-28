@@ -453,7 +453,7 @@ body[data-theme="light"] .status-pill { color: #15803d; }
 #install-from-login { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; }
 #install-from-login.hidden { display: none; }
 .proj-demo { margin-top: 16px; }
-.proj-demo img { display: block; width: 100%; border-radius: 10px; border: 1px solid var(--border, rgba(127,127,127,.25)); }
+.proj-demo img, .proj-demo video { display: block; background: #000; width: 100%; border-radius: 10px; border: 1px solid var(--border, rgba(127,127,127,.25)); }
 
 /* Task manager */
 .tm { display: flex; flex-direction: column; height: 100%; }
