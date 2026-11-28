@@ -94,18 +94,20 @@ window.PORTFOLIO = {
       id: "pyq-lens",
       title: "PYQ Lens",
       tagline: "Finds the patterns in previous year question papers",
-      description: "Upload previous year question papers for a subject as PDFs, phone photos or pasted text. PYQ Lens reads every question (with OCR for scanned pages), groups the questions by topic and shows what to study first, which topics are likely due, which are rising or fading, questions repeated across years, and a year-by-year marks heatmap. Free and open source, with no paid APIs.",
-      tech: ["Python", "FastAPI", "SQLAlchemy", "PyMuPDF", "RapidOCR", "Tesseract", "scikit-learn", "React", "TypeScript", "Vite", "Docker"],
+      description: "Upload previous year question papers for a subject as digital PDFs, scanned pages, phone photos or pasted text. PYQ Lens reads every question, groups the questions by topic and shows what to study first, which topics are likely due, which are rising or fading, questions repeated across years, a year-by-year marks heatmap, and marks by unit and question type. Live on Render with a Neon Postgres database: anyone can sign up, and each account keeps its own private subjects and papers. Free and open source, with no paid APIs.",
+      tech: ["Python", "FastAPI", "SQLAlchemy", "PyMuPDF", "RapidOCR", "scikit-learn", "React", "TypeScript", "Vite", "Neon Postgres", "Neon Auth", "Render", "Modal", "Docker"],
       year: "2026",
       color: "#3b9eff",
       icon: "zoom-scan",
       highlights: [
         "Topics ranked by frequency, marks share and recency",
         "Spots likely-due, rising and fading topics plus repeated questions",
-        "OCR for scanned papers and multi-page phone photos",
-        "Syllabus matching or automatic clustering with TF-IDF"
+        "Drop a pile of photos: sorted into papers by header, numbering and print style",
+        "OCR turns photos upright and keeps diagrams with their questions",
+        "Runs on free tiers: Render (512 MB) plus an optional Modal OCR helper",
+        "Email sign-up with Neon Auth, private subjects per account"
       ],
-      links: { live: "", code: "https://github.com/ManishAdithya/pyq-lens" }
+      links: { live: "https://pyq-lens.onrender.com", code: "https://github.com/ManishAdithya/pyq-lens" }
     }
   ],
 
