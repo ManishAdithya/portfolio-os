@@ -88,7 +88,24 @@ window.PORTFOLIO = {
         "Roll-number sign-in with JWT, bcrypt and account lockout",
         "Installable PWA, files stored on Vercel Blob"
       ],
-      links: { live: "https://preptrack-app.vercel.app", code: "https://github.com/ManishAdithya/PrepTrack" }
+      links: { demo: "assets/preptrack-demo.gif", live: "https://preptrack-app.vercel.app", code: "https://github.com/ManishAdithya/PrepTrack" }
+    },
+    {
+      id: "pyq-lens",
+      title: "PYQ Lens",
+      tagline: "Finds the patterns in previous year question papers",
+      description: "Upload previous year question papers for a subject as PDFs, phone photos or pasted text. PYQ Lens reads every question (with OCR for scanned pages), groups the questions by topic and shows what to study first, which topics are likely due, which are rising or fading, questions repeated across years, and a year-by-year marks heatmap. Free and open source, with no paid APIs.",
+      tech: ["Python", "FastAPI", "SQLAlchemy", "PyMuPDF", "RapidOCR", "Tesseract", "scikit-learn", "React", "TypeScript", "Vite", "Docker"],
+      year: "2026",
+      color: "#3b9eff",
+      icon: "zoom-scan",
+      highlights: [
+        "Topics ranked by frequency, marks share and recency",
+        "Spots likely-due, rising and fading topics plus repeated questions",
+        "OCR for scanned papers and multi-page phone photos",
+        "Syllabus matching or automatic clustering with TF-IDF"
+      ],
+      links: { live: "", code: "https://github.com/ManishAdithya/pyq-lens" }
     }
   ],
 

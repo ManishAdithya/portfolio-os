@@ -103,12 +103,20 @@
             <ul class="proj-list">${(p.highlights || []).map((x) => `<li><i class="ti ti-sparkles"></i>${esc(x)}</li>`).join("")}</ul>
             <div class="chips" style="margin-bottom:18px">${p.tech.map((t) => `<span class="chip">${esc(t)}</span>`).join("")}</div>
             <div class="chips" style="gap:8px">
-              ${p.links?.live ? `<a class="btn accent" href="${esc(p.links.live)}" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> Live demo</a>` : ""}
+              ${p.links?.demo ? `<button class="btn accent" data-demo><i class="ti ti-player-play"></i> Live demo</button>` : ""}
+              ${p.links?.live ? `<a class="btn${p.links?.demo ? "" : " accent"}" href="${esc(p.links.live)}" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> Visit the website</a>` : ""}
               ${p.links?.code ? `<a class="btn" href="${esc(p.links.code)}" target="_blank" rel="noopener"><i class="ti ti-brand-github"></i> Source code</a>` : ""}
-              ${!p.links?.live && !p.links?.code ? `<button class="btn" data-ask><i class="ti ti-mail"></i> Ask me about this project</button>` : ""}
+              ${!p.links?.demo && !p.links?.live && !p.links?.code ? `<button class="btn" data-ask><i class="ti ti-mail"></i> Ask me about this project</button>` : ""}
             </div>
+            <div class="proj-demo hidden"></div>
           </div>`;
         $("[data-ask]", content)?.addEventListener("click", () => open("mail"));
+        $("[data-demo]", content)?.addEventListener("click", () => {
+          const box = $(".proj-demo", content);
+          if (!box.firstChild) box.innerHTML = `<img src="${esc(p.links.demo)}" alt="${esc(p.title)} demo">`;
+          box.classList.toggle("hidden");
+          if (!box.classList.contains("hidden")) box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
       }
       $(".back", body).addEventListener("click", () => { hist.pop(); show(hist[hist.length - 1], false); });
       $(".up", body).addEventListener("click", () => show(null));

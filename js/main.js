@@ -237,7 +237,7 @@
       ${P.about.map((p) => `<p class="muted" style="line-height:1.7">${esc(p)}</p>`).join("")}
       <h2>Projects</h2>
       <div class="rc-proj">${P.projects.map((p) => `<div class="rc-card"><span class="app-ico md" style="--ico:${esc(p.color)}"><i class="ti ti-${esc(p.icon)}"></i></span><h3>${esc(p.title)}</h3><p>${esc(p.description)}</p><div class="chips">${p.tech.map((t) => `<span class="chip">${esc(t)}</span>`).join("")}</div>
-        <div class="chips" style="margin-top:10px;gap:10px">${p.links?.live ? `<a href="${esc(p.links.live)}" target="_blank" rel="noopener">Live demo</a>` : ""}${p.links?.code ? `<a href="${esc(p.links.code)}" target="_blank" rel="noopener">Source</a>` : ""}</div></div>`).join("")}</div>
+        <div class="chips" style="margin-top:10px;gap:10px">${p.links?.demo ? `<a href="${esc(p.links.demo)}" target="_blank" rel="noopener">Live demo</a>` : ""}${p.links?.live ? `<a href="${esc(p.links.live)}" target="_blank" rel="noopener">Visit the website</a>` : ""}${p.links?.code ? `<a href="${esc(p.links.code)}" target="_blank" rel="noopener">Source</a>` : ""}</div></div>`).join("")}</div>
       ${P.experience.length ? `<h2>Experience</h2>
       <div class="timeline">${P.experience.map((x) => `<div class="tl-item"><b>${esc(x.role)}</b> <span class="muted">@ ${esc(x.company)}</span><div class="tiny">${esc(x.period)}</div><ul>${x.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul></div>`).join("")}</div>` : ""}
       <h2>Education</h2>
