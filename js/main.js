@@ -211,6 +211,42 @@
   $("#tray-recruiter").addEventListener("click", () => recruiter(true));
   $("#tray-clock").addEventListener("click", () => toast(fmtDate(new Date(), true), `${fmtTime(new Date(), true)} in ${P.location}`, { icon: "calendar", ms: 2500 }));
 
+  /* ---------- Install as an app (PWA) ---------- */
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+  }
+  let installPrompt = null;
+  const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+  const ua = navigator.userAgent;
+  const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const isSafari = /^((?!chrome|android|crios|fxios|edg).)*safari/i.test(ua);
+  const showInstall = (on) => $$(".install-btn").forEach((b) => b.classList.toggle("hidden", !on));
+  showInstall(!standalone());
+  window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installPrompt = e; showInstall(true); });
+  window.addEventListener("appinstalled", () => {
+    installPrompt = null; showInstall(false);
+    toast("Installed", "Portfolio OS is now on your device. Open it like any other app.", { icon: "download", color: "#22c55e" });
+  });
+  async function install() {
+    WM.closeMenus();
+    if (installPrompt) {
+      installPrompt.prompt();
+      const { outcome } = await installPrompt.userChoice;
+      installPrompt = null;
+      if (outcome !== "accepted") toast("Maybe later", "The install option stays here if you change your mind.", { icon: "download", ms: 2600 });
+      return;
+    }
+    const how = isIOS
+      ? "Tap the Share button, then “Add to Home Screen”."
+      : isSafari
+        ? "In Safari's menu bar choose File → Add to Dock."
+        : /firefox/i.test(ua) && !/android/i.test(ua)
+          ? "Firefox on computers can't install web apps. Open this site in Chrome, Edge or Safari."
+          : "Open your browser's menu and choose “Install app” or “Add to Home screen”.";
+    toast("Install Portfolio OS", how, { icon: "download", ms: 6000 });
+  }
+  $$(".install-btn").forEach((b) => b.addEventListener("click", (e) => { e.stopPropagation(); install(); }));
+
   /* ---------- Blue screen ---------- */
   OS.bsod = () => {
     Ach.unlock("crash");
@@ -281,7 +317,7 @@
     konamiStep(k);
 
     if (!$("#boot").classList.contains("hidden") && (k === "escape" || k === " " || k === "enter")) { e.preventDefault(); toLogin(); return; }
-    if (!$("#login").classList.contains("hidden") && (k === "enter" || k === " ") && !e.target.closest("#recruiter-from-login")) { e.preventDefault(); login(); return; }
+    if (!$("#login").classList.contains("hidden") && (k === "enter" || k === " ") && !e.target.closest("#recruiter-from-login, #install-from-login")) { e.preventDefault(); login(); return; }
     if (k === "escape") {
       if (!$("#recruiter").classList.contains("hidden")) return recruiter(false);
       WM.closeMenus();

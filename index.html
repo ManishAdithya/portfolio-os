@@ -6,6 +6,12 @@
   <title>Portfolio OS</title>
   <meta name="description" content="An interactive portfolio disguised as an operating system." />
   <meta name="theme-color" content="#0d0b1f" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Portfolio OS" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='16' fill='%237c6cff'/><text x='50%25' y='56%25' font-size='36' font-family='Arial' font-weight='bold' text-anchor='middle' dominant-baseline='middle' fill='white'>M</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -53,6 +59,7 @@
       </button>
       <p class="login-hint">Press <kbd>Enter</kbd> or click to log in · no password needed</p>
       <button id="recruiter-from-login" class="link-btn">In a hurry? Open recruiter mode</button>
+      <button id="install-from-login" class="link-btn install-btn hidden"><i class="ti ti-download"></i> Install as an app</button>
     </div>
   </section>
 
@@ -78,6 +85,7 @@
     <div id="tb-apps"></div>
     <div class="tb-spacer"></div>
     <div id="tray">
+      <button class="tray-btn install-btn hidden" id="tray-install" title="Install app"><i class="ti ti-download"></i></button>
       <button class="tray-btn" id="tray-trophy" title="Achievements"><i class="ti ti-trophy"></i><span id="ach-count">0</span></button>
       <button class="tray-btn" id="tray-sound" title="Toggle sounds"><i class="ti ti-volume"></i></button>
       <button class="tray-btn" id="tray-recruiter" title="Recruiter mode"><i class="ti ti-briefcase"></i></button>
@@ -95,6 +103,7 @@
     <div class="sm-footer">
       <div class="sm-user"><div class="avatar avatar-sm" id="sm-avatar"></div><span id="sm-name"></span></div>
       <div class="sm-power">
+        <button title="Install app" class="install-btn hidden" data-install><i class="ti ti-download"></i></button>
         <button title="Lock" data-power="lock"><i class="ti ti-lock"></i></button>
         <button title="Restart" data-power="restart"><i class="ti ti-refresh"></i></button>
         <button title="Shut down" data-power="shutdown"><i class="ti ti-power"></i></button>
