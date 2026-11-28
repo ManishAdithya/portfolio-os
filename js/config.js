@@ -63,14 +63,20 @@ window.PORTFOLIO = {
     {
       id: "bhashify",
       title: "Bhashify",
-      tagline: "LLM-powered Romanized Telugu understanding",
-      description: "A language assistant that understands informal, dialect-rich Telugu written in English letters (Telglish), including inconsistent spellings, mixed English and regional dialects. It has five modes: English translation, word-by-word explanation, Telugu script conversion, conversation and customer support.",
-      tech: ["Python", "LLMs", "GPT-OSS-120B", "Groq API", "Ollama", "SSE", "Docker"],
+      tagline: "Your Telugu group chat, in English",
+      description: "A Chrome extension for WhatsApp Web that tells people who don't speak Telugu what their Telugu group chat said. Pick a time range and get an English summary: the important details (deadlines, exams, payments, links), who said what, and what you need to do. Any message can be translated right inside the chat. Behind it is an LLM backend that understands Telugu the way people actually type it: in English letters mixed with English (\"Telglish\"), with no fixed spelling, in any dialect. It comes with a hand-reviewed dataset and an evaluation pipeline that measures how well it really works.",
+      tech: ["Python", "FastAPI", "Chrome Extension", "GPT-OSS-120B", "Gemini", "Groq", "RAG", "SSE", "Docker", "Vercel"],
       year: "2026",
-      color: "#7c6cff",
+      color: "#ff8a1f",
       icon: "language",
-      highlights: ["Parallel language and dialect detection", "Token-by-token streaming with multi-turn memory", "Structured JSON insights and automated evaluation"],
-      links: { live: "https://bhashify.vercel.app/", code: "https://github.com/ManishAdithya/Bhashify" }
+      highlights: [
+        "Summaries of any period: deadlines, payments, who said what and your to-dos",
+        "77% correct meaning on 140 held-out sentences, graded by a separate judge model",
+        "Grounded support agent: right help article first 96% of the time, never guesses",
+        "Telugu-script pivot, retrieved examples and parallel dialect detection, streamed over SSE",
+        "77 Python and 6 JavaScript tests, GitHub Actions CI, Docker image"
+      ],
+      links: { demo: "assets/bhashify-demo.gif", live: "https://bhashify.vercel.app/", code: "https://github.com/ManishAdithya/Bhashify" }
     },
     {
       id: "preptrack",
