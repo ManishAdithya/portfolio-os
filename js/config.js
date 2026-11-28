@@ -18,12 +18,11 @@ window.PORTFOLIO = {
   logo: "assets/logo.png",
   // Picture in the avatar circles (login, README, recruiter mode). Empty = initials.
   avatar: "assets/logo.png",
-  // Optional: path or URL to your resume PDF, e.g. "assets/resume.pdf".
-  resumeUrl: "",
 
   about: [
     "I'm a Computer Science and Engineering student passionate about Artificial Intelligence, Machine Learning, Data Science, and Software Development. I enjoy building practical projects, exploring emerging technologies, and solving real-world problems through code.",
-    "I'm continuously improving my skills in programming, problem-solving, and intelligent systems, with a goal of creating impactful technology."
+    "I'm continuously improving my skills in programming, problem-solving, and intelligent systems, with a goal of creating impactful technology.",
+    "I'm also into cybersecurity. I reverse engineer Android apps, analyse real-world malware and play CTFs, and I write up what I find in my security blogs."
   ],
 
   facts: [

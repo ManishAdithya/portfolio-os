@@ -7,7 +7,6 @@ An interactive portfolio built to look and feel like a desktop operating system.
 Everything (name, bio, projects, skills, experience, links, recycle-bin jokes) lives in **`js/config.js`**.
 
 - Photo: put an image in `assets/` and set `avatar: "assets/me.jpg"`.
-- Resume: put a PDF in `assets/` and set `resumeUrl: "assets/resume.pdf"`.
 - Project icons use [Tabler icon](https://tabler.io/icons) names, like `rocket` or `brand-github`.
 
 ## Run locally

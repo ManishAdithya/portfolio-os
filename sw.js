@@ -1,6 +1,6 @@
 /* Service worker: makes the portfolio installable and lets it open offline.
  * Bump VERSION whenever you want installed copies to drop their old cache. */
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = "portfolio-" + VERSION;
 const CORE = [
   "./",

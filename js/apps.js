@@ -33,7 +33,6 @@
           <div class="chips" style="margin-top:22px;gap:8px">
             <button class="btn accent" data-go="projects"><i class="ti ti-folder"></i> See my projects</button>
             <button class="btn" data-go="mail"><i class="ti ti-mail"></i> Contact me</button>
-            ${P.resumeUrl ? `<a class="btn" href="${esc(P.resumeUrl)}" target="_blank" rel="noopener"><i class="ti ti-download"></i> Resume</a>` : ""}
           </div>
         </div>`;
       paintAvatar($(".avatar", body));
@@ -56,7 +55,7 @@
             <button data-nav="skills"><i class="ti ti-activity"></i> Skills</button>
             <button data-nav="mail"><i class="ti ti-mail"></i> Contact</button>
             <div class="tiny" style="margin-top:14px">Projects</div>
-            ${P.projects.map((p) => `<button data-proj="${esc(p.id)}"><i class="ti ti-${esc(p.icon)}" style="color:${esc(p.color)}"></i> ${esc(p.title)}</button>`).join("")}
+            ${P.projects.map((p) => `<button data-proj="${esc(p.id)}"><i class="ti ti-${esc(p.icon)}"></i> ${esc(p.title)}</button>`).join("")}
           </aside>
           <section class="ex-main">
             <div class="ex-bar">
@@ -138,7 +137,7 @@
   const fmtNum = (n) => n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k" : String(n);
   const fmtDay = (d) => new Date(d + "T00:00:00").toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
   if (BLOG) registerApp("blog", {
-    title: "Security Blog", icon: "shield-lock", color: "#10b981", w: 760, h: 580,
+    title: "Security Blogs", icon: "shield-lock", color: "#10b981", w: 760, h: 580,
     render(ctx) {
       const { body } = ctx;
       const posts = BLOG.posts;
@@ -295,7 +294,7 @@
   <span class="ok">whoami</span>       who is this person?
   <span class="ok">about</span>        open README
   <span class="ok">projects</span>     list my projects (try <span class="ok">projects nova</span>)
-  <span class="ok">blog</span>         my security write-ups
+  <span class="ok">blogs</span>        my security write-ups
   <span class="ok">skills</span>       my tech stack
   <span class="ok">experience</span>   where I've worked
   <span class="ok">contact</span>      ways to reach me
@@ -320,7 +319,7 @@
         },
         blog: () => {
           if (!BLOG) return print("blog: nothing published yet", "dim");
-          print(BLOG.posts.map((p) => `<span class="dim">${esc(p.date)}</span>  <a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>`).join("\n") + `\n<span class="dim">opening the Security Blog…</span>`);
+          print(BLOG.posts.map((p) => `<span class="dim">${esc(p.date)}</span>  <a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>`).join("\n") + `\n<span class="dim">opening Security Blogs…</span>`);
           open("blog");
         },
         skills: () => {
@@ -333,7 +332,7 @@
         experience: () => P.experience.length ? print(P.experience.map((x) => `<span class="hl">${esc(x.role)}</span> @ ${esc(x.company)} <span class="dim">(${esc(x.period)})</span>\n` + x.points.map((p) => `  • ${esc(p)}`).join("\n")).join("\n\n")) : print(`Currently studying: ${P.education.map((e) => esc(e.degree + " @ " + e.school)).join(", ")}\n<span class="ok">${esc(P.status || "Open to opportunities")}</span>, internships and collaborations welcome. Type 'contact'.`),
         contact: () => print(`<span class="dim">email</span>     <a href="mailto:${esc(P.email)}">${esc(P.email)}</a>\n` + P.socials.map((s) => `<span class="dim">${esc(s.label.toLowerCase().padEnd(10))}</span><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url)}</a>`).join("\n") + `\n<span class="dim">or type 'open mail'</span>`),
         open: (a) => {
-          const app = (a[0] || "").toLowerCase().replace("about", "readme").replace("contact", "mail").replace("recycle", "bin");
+          const app = (a[0] || "").toLowerCase().replace(/^blogs$/, "blog").replace("about", "readme").replace("contact", "mail").replace("recycle", "bin");
           if (!OPENABLE.includes(app)) return print(`open: unknown app '${esc(a[0] || "")}'. Try: ${OPENABLE.join(", ")}`, "err");
           print(`Opening ${esc(app)}…`, "dim"); open(app);
         },
@@ -384,6 +383,7 @@
         coffee: () => print(`    ( (\n     ) )\n  ........\n  |      |]\n  \\      /\n   \`----'\n<span class="dim">Here you go. Fuel for the next feature.</span>`),
         hello: () => print(`Hey there! 👋 Thanks for stopping by. Type 'help' to explore.`),
         hi: () => cmds.hello(),
+        blogs: () => cmds.blog(),
         vim: () => print("You are now trapped in vim. Just kidding. Type ':q' if it makes you feel better.", "dim"),
         ":q": () => print("Freedom.", "ok"),
         ping: () => { let n = 0; const iv = setInterval(() => { print(`64 bytes from ${esc(P.firstName.toLowerCase())}: icmp_seq=${n} time=${(Math.random() * 20 + 5).toFixed(1)} ms`); if (++n > 3) { clearInterval(iv); print("Response is fast. So is my reply to emails.", "ok"); } }, 400); },
@@ -527,7 +527,8 @@
 
   /* ================= Settings ================= */
   const WALLPAPERS = OS.Wallpaper.list;
-  const ACCENTS = [["#7c6cff", "#ff5fa2"], ["#3b82f6", "#22d3ee"], ["#10b981", "#a3e635"], ["#f97316", "#facc15"], ["#ef4444", "#f472b6"], ["#e879f9", "#818cf8"]];
+  // [accent, accent-2]. The first is the default and must match --accent in css/style.css.
+  const ACCENTS = [["#8ec5ff", "#b9a8ff"], ["#f4f6fb", "#aab4c4"], ["#7ee0d2", "#8ec5ff"], ["#ffc46b", "#ff9566"], ["#ff6b7a", "#ff9bb0"]];
   OS.WALLPAPERS = WALLPAPERS;
 
   registerApp("settings", {

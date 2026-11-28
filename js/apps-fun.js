@@ -219,7 +219,7 @@
         g.fillStyle = "rgba(255,255,255,.03)";
         for (let x = 0; x < N; x++) for (let y = 0; y < N; y++) if ((x + y) % 2) g.fillRect(x * S, y * S, S, S);
         const t = Date.now() / 200;
-        g.fillStyle = "#ff5fa2"; g.shadowColor = "#ff5fa2"; g.shadowBlur = 12 + Math.sin(t) * 6;
+        g.fillStyle = "#ffc46b"; g.shadowColor = "#ffc46b"; g.shadowBlur = 12 + Math.sin(t) * 6;
         g.beginPath(); g.arc(food.x * S + S / 2, food.y * S + S / 2, S / 2.6, 0, Math.PI * 2); g.fill(); g.shadowBlur = 0;
         snake.forEach((p, i) => {
           g.fillStyle = `hsl(${140 - i * 3},75%,${60 - Math.min(i, 20)}%)`;

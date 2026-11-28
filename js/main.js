@@ -7,15 +7,16 @@
   OS.setTheme = (t) => { document.body.dataset.theme = t; store.set("theme", t); };
   OS.setWallpaper = (w) => { document.body.dataset.wallpaper = w; store.set("wallpaper", w); OS.Wallpaper.set(w); Ach.unlock("decorator"); };
   OS.nextWallpaper = () => { const ids = OS.WALLPAPERS.map((w) => w[0]); OS.setWallpaper(ids[(ids.indexOf(document.body.dataset.wallpaper) + 1) % ids.length]); };
-  OS.setAccent = (a, b) => { const r = document.documentElement.style; r.setProperty("--accent", a); r.setProperty("--accent-2", b); store.set("accent", [a, b]); };
+  OS.setAccent = (a, b) => { const r = document.documentElement.style; r.setProperty("--accent", a); r.setProperty("--accent-2", b); store.set("accentV2", [a, b]); };
   OS.toggleSound = () => { const on = Sound.toggle(); $("#tray-sound i").className = "ti ti-" + (on ? "volume" : "volume-off"); return on; };
 
   document.body.dataset.theme = store.get("theme", "dark");
-  const savedWp = store.get("wallpaper", "galaxy");
-  const startWp = OS.Wallpaper.list.some(([id]) => id === savedWp) ? savedWp : "galaxy"; // old gradient ids fall back
+  const savedWp = store.get("wallpaper", OS.Wallpaper.list[0][0]);
+  const startWp = OS.Wallpaper.list.some(([id]) => id === savedWp) ? savedWp : OS.Wallpaper.list[0][0]; // ids from older versions fall back
   document.body.dataset.wallpaper = startWp;
   OS.Wallpaper.set(startWp);
-  const acc = store.get("accent", null); if (acc) { document.documentElement.style.setProperty("--accent", acc[0]); document.documentElement.style.setProperty("--accent-2", acc[1]); }
+  // "accentV2": accents saved before the redesign are ignored
+  const acc = store.get("accentV2", null); if (acc) { document.documentElement.style.setProperty("--accent", acc[0]); document.documentElement.style.setProperty("--accent-2", acc[1]); }
   if (store.get("reduceMotion", false)) document.body.classList.add("reduce-motion");
   if (!Sound.enabled) $("#tray-sound i").className = "ti ti-volume-off";
   document.title = `${P.name} · Portfolio OS`;
@@ -117,7 +118,7 @@
   /* ---------- Desktop icons ---------- */
   // Kept short on purpose. Everything else lives in the Start menu, the Fun stuff folder and the tray.
   const ICONS = [
-    ["readme", "About me"], ["projects", "Projects"], ["blog", "Blog"], ["skills", "Skills"], ["terminal", "Terminal"],
+    ["readme", "About me"], ["projects", "Projects"], ["blog", "Blogs"], ["skills", "Skills"], ["terminal", "Terminal"],
     ["mail", "Contact"], ["fun", "Fun stuff"], ["bin", "Recycle Bin"]
   ];
   function renderIcons() {
@@ -266,9 +267,9 @@
     if (!on) { r.classList.add("hidden"); history.replaceState(null, "", location.pathname); return; }
     r.innerHTML = `<div class="rc">
       <div class="rc-top"><span class="chip"><i class="ti ti-briefcase"></i> Recruiter mode · the quick version</span>
-        <div class="chips" style="gap:8px"><button class="btn" id="rc-print"><i class="ti ti-printer"></i> Print</button><button class="btn accent" id="rc-back"><i class="ti ti-device-desktop"></i> Back to the fun version</button></div></div>
+        <div class="chips" style="gap:8px"><button class="btn accent" id="rc-back"><i class="ti ti-device-desktop"></i> Back to the fun version</button></div></div>
       <div class="rc-head"><div class="avatar avatar-lg"></div><div><h1>${esc(P.name)}</h1><p>${esc(P.role)} · ${esc(P.location)}</p>${P.status ? `<span class="status-pill">${esc(P.status)}</span>` : ""}
-        <div class="rc-links"><a class="btn" href="mailto:${esc(P.email)}"><i class="ti ti-mail"></i> ${esc(P.email)}</a>${P.socials.map((s) => `<a class="btn" href="${esc(s.url)}" target="_blank" rel="noopener"><i class="ti ti-${esc(s.icon)}"></i> ${esc(s.label)}</a>`).join("")}${P.resumeUrl ? `<a class="btn" href="${esc(P.resumeUrl)}" target="_blank" rel="noopener"><i class="ti ti-download"></i> Resume</a>` : ""}</div></div></div>
+        <div class="rc-links"><a class="btn" href="mailto:${esc(P.email)}"><i class="ti ti-mail"></i> ${esc(P.email)}</a>${P.socials.map((s) => `<a class="btn" href="${esc(s.url)}" target="_blank" rel="noopener"><i class="ti ti-${esc(s.icon)}"></i> ${esc(s.label)}</a>`).join("")}</div></div></div>
       <p style="font-size:18px;line-height:1.6">${esc(P.tagline)}</p>
       ${P.about.map((p) => `<p class="muted" style="line-height:1.7">${esc(p)}</p>`).join("")}
       <h2>Projects</h2>
@@ -286,7 +287,6 @@
     </div>`;
     paintAvatar($(".avatar", r));
     $("#rc-back").addEventListener("click", () => recruiter(false));
-    $("#rc-print").addEventListener("click", () => print());
     r.classList.remove("hidden"); r.scrollTop = 0;
     history.replaceState(null, "", "?recruiter");
   }

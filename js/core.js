@@ -169,7 +169,7 @@
 
   /* ---------- Confetti ---------- */
   function confetti(x = innerWidth / 2, y = innerHeight / 2, n = 80) {
-    const colors = ["#7c6cff", "#ff5fa2", "#22c7a9", "#fbbf24", "#60a5fa", "#f87171"];
+    const colors = ["#8ec5ff", "#b9a8ff", "#f4f6fb", "#ffc46b", "#7ee0d2"];
     for (let i = 0; i < n; i++) {
       const c = document.createElement("div");
       c.className = "confetti";
