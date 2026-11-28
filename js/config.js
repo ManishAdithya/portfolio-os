@@ -111,6 +111,88 @@ window.PORTFOLIO = {
     }
   ],
 
+  // Security write-ups on Medium, newest first. The section hides while posts is empty.
+  // kind groups the filter buttons. image: the post's cover (any URL). minutes: read time.
+  // Optional stats, shown when filled in: views, reads, claps.
+  blog: {
+    url: "https://medium.com/@5h3nron",
+    handle: "@5h3nron",
+    posts: [
+      {
+        title: "Analyzing a new Persian Malware (I'll call it Netix)",
+        url: "https://medium.com/@5h3nron/analyzing-a-new-persian-malware-ill-call-it-netix-a37c934b5cb2",
+        date: "2025-04-27", minutes: 10, kind: "Malware analysis",
+        summary: "A deep breakdown of an Android banking trojan aimed at Iranian bank users: hidden C2 servers, forced SMS and contact permissions, data theft, persistence through Firebase, and ransomware-style behaviour.",
+        tags: ["Android malware", "Banking trojan", "Reverse engineering"],
+        image: "https://cdn-images-1.medium.com/max/600/1*l7PhhX0URhcG2ARxdgEMZg.png"
+      },
+      {
+        title: "Analyzing a Malicious Android APK: The Iranian APK, Sana System",
+        url: "https://medium.com/@5h3nron/analyzing-a-malicious-android-apk-the-iranian-apk-sana-system-bebeddec87d8",
+        date: "2024-11-14", minutes: 4, kind: "Malware analysis",
+        summary: "How an Android app tricks users into granting SMS access, then intercepts and stores their messages. Covers its data storage, WebView handling and SMS interception code.",
+        tags: ["Android malware", "Static analysis", "SMS interception"],
+        image: "https://cdn-images-1.medium.com/max/600/1*3vPfNaweDfn7PU6_KXmGjw.png"
+      },
+      {
+        title: "Solving the Mobisec Challenge: DefCamp 2024",
+        url: "https://medium.com/@5h3nron/solving-the-mobisec-challenge-defcamp-2024-ad3376afaaf4",
+        date: "2024-10-25", minutes: 4, kind: "CTF write-up",
+        summary: "Analysing and exploiting the Mobisec Android app from DefCamp 2024: spotting the flaw, scripting UUID checks and reversing hashes to pull out the flags.",
+        tags: ["DefCamp", "Android", "Hash reversing"],
+        image: "https://cdn-images-1.medium.com/max/600/1*AUZJItbZ9d_-TO_2ymlDvw.png"
+      },
+      {
+        title: "Lookdown Challenge from TCP1P: A Step-by-Step Guide",
+        url: "https://medium.com/@5h3nron/lookdown-challenge-from-tcp1p-a-step-by-step-guide-3ed20e9ec385",
+        date: "2024-10-15", minutes: 5, kind: "CTF write-up",
+        summary: "Solving an Android challenge that is only beaten by submitting a proof-of-concept app: the vulnerable code, the logic behind the PoC, and how it gets the flag.",
+        tags: ["TCP1P CTF", "Android", "Proof of concept"],
+        image: "https://cdn-images-1.medium.com/max/600/1*-Ika58fEcfPkGZbT2svF5Q.png"
+      },
+      {
+        title: "Solving Treasure Hunt from Iron CTF",
+        url: "https://medium.com/@5h3nron/solving-tresure-hunt-from-iron-ctf-5fa0ab33697c",
+        date: "2024-10-06", minutes: 3, kind: "CTF write-up",
+        summary: "Following clues through an Android app's files and activities to find a hidden flag, written to be easy to follow for people new to reverse engineering.",
+        tags: ["Iron CTF", "Android reversing"],
+        image: "https://cdn-images-1.medium.com/max/600/1*VlSxPiIkYtnyIB0YjSQgeQ.png"
+      },
+      {
+        title: "Solving CryptoHorrific Challenge from Hack The Box",
+        url: "https://medium.com/@5h3nron/solving-cryptohorrific-challenge-from-hack-the-box-0e79f0138af6",
+        date: "2024-10-03", minutes: 3, kind: "CTF write-up",
+        summary: "A mobile crypto puzzle from Hack The Box: reversing an iOS Mach-O binary and its plist to recover the key and decrypt the flag.",
+        tags: ["Hack The Box", "iOS", "Cryptography"],
+        image: "https://cdn-images-1.medium.com/max/600/1*ph1Ofzq6fZL-etcHqSyCEw.png"
+      },
+      {
+        title: "HTB “Saw” Challenge: The Saw APK",
+        url: "https://medium.com/@5h3nron/htb-saw-challenge-the-saw-apk-d4be714b0a0e",
+        date: "2024-09-09", minutes: 6, kind: "CTF write-up",
+        summary: "Reverse engineering the Saw APK from Hack The Box, from the Java code down to its native library in IDA, to uncover the hidden flag.",
+        tags: ["Hack The Box", "Android", "Native code", "IDA"],
+        image: "https://cdn-images-1.medium.com/max/600/1*5NIlLtOQh1JsBAHqf-H01A.png"
+      },
+      {
+        title: "Breaking Down the Injured Android APK, Part 2",
+        url: "https://medium.com/@5h3nron/breaking-down-the-injured-android-apk-part-2-e4ad96c0c6c0",
+        date: "2024-08-22", minutes: 4, kind: "CTF write-up",
+        summary: "More flags from the deliberately vulnerable Injured Android app: protected components, remote code execution, XSS and binary exploitation.",
+        tags: ["Injured Android", "RCE", "XSS"],
+        image: "https://cdn-images-1.medium.com/max/600/1*kXV9zxHMZAUFyemtCJl03A.png"
+      },
+      {
+        title: "Hacking SpacePeng with Frida: Game Hacking and Script Exploits",
+        url: "https://medium.com/@5h3nron/hacking-spacepeng-with-frida-a-deep-dive-into-game-hacking-and-script-exploits-559e7546fab2",
+        date: "2024-08-17", minutes: 4, kind: "Game hacking",
+        summary: "Using Frida to hook a mobile game at runtime and add cheats: infinite lives, rapid fire, invisibility and more, with the scripts explained.",
+        tags: ["Frida", "Dynamic instrumentation", "Android"],
+        image: "https://cdn-images-1.medium.com/max/600/1*BKOTCNXsCeS0KGqpGjKKqg.png"
+      }
+    ]
+  },
+
   // level: 0-100 (rough self-rating). group is used for sections in the Task Manager.
   skills: [
     { name: "Python",     level: 90, group: "Languages" },

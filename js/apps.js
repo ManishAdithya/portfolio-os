@@ -133,6 +133,56 @@
     onArgs(ctx, args) { if (args.project && ctx.show) ctx.show(args.project); }
   });
 
+  /* ================= Security blog (Medium posts) ================= */
+  const BLOG = P.blog && P.blog.posts && P.blog.posts.length ? P.blog : null;
+  const fmtNum = (n) => n >= 1000 ? (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, "") + "k" : String(n);
+  const fmtDay = (d) => new Date(d + "T00:00:00").toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+  if (BLOG) registerApp("blog", {
+    title: "Security Blog", icon: "shield-lock", color: "#10b981", w: 760, h: 580,
+    render(ctx) {
+      const { body } = ctx;
+      const posts = BLOG.posts;
+      const kinds = [...new Set(posts.map((p) => p.kind).filter(Boolean))];
+      const total = (k) => posts.reduce((s, p) => s + (Number(p[k]) || 0), 0);
+      const stats = [["views", "Views"], ["reads", "Reads"], ["claps", "Claps"]].filter(([k]) => total(k) > 0);
+      body.innerHTML = `
+        <div class="blog app-pad reveal">
+          <div class="blog-head">
+            <div>
+              <h2><i class="ti ti-brand-medium"></i> Security write-ups</h2>
+              <p class="muted">Android malware analysis, CTF write-ups and app hacking, published on Medium.</p>
+            </div>
+            <a class="btn accent" href="${esc(BLOG.url)}" target="_blank" rel="noopener"><i class="ti ti-external-link"></i> ${esc(BLOG.handle || "Medium")}</a>
+          </div>
+          <div class="blog-stats">
+            <div><b>${posts.length}</b><small>Posts</small></div>
+            ${stats.map(([k, l]) => `<div><b>${fmtNum(total(k))}</b><small>${l}</small></div>`).join("")}
+            <div><b>${kinds.length}</b><small>Topics</small></div>
+          </div>
+          ${kinds.length > 1 ? `<div class="blog-filter chips"><button class="chip on" data-kind="">All</button>${kinds.map((k) => `<button class="chip" data-kind="${esc(k)}">${esc(k)}</button>`).join("")}</div>` : ""}
+          <div class="blog-list">${posts.map((p, i) => `
+            <a class="blog-card" href="${esc(p.url)}" target="_blank" rel="noopener" data-kind="${esc(p.kind || "")}" style="animation-delay:${i * 50}ms">
+              ${p.image ? `<div class="blog-img"><img src="${esc(p.image)}" alt="" loading="lazy" referrerpolicy="no-referrer"></div>` : ""}
+              <div class="blog-body">
+                <div class="tiny">${p.kind ? `<span class="blog-kind">${esc(p.kind)}</span> · ` : ""}${esc(fmtDay(p.date))}${p.minutes ? ` · ${p.minutes} min read` : ""}</div>
+                <h3>${esc(p.title)}</h3>
+                <p class="muted">${esc(p.summary || "")}</p>
+                <div class="blog-foot">
+                  <div class="chips">${(p.tags || []).map((t) => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+                  ${[["views", "eye"], ["reads", "book"], ["claps", "hand-click"]].filter(([k]) => p[k]).map(([k, ic]) => `<span class="blog-stat"><i class="ti ti-${ic}"></i>${fmtNum(p[k])}</span>`).join("")}
+                </div>
+              </div>
+            </a>`).join("")}</div>
+        </div>`;
+      $$(".blog-img img", body).forEach((img) => img.addEventListener("error", () => img.parentElement.remove()));
+      $$(".blog-filter [data-kind]", body).forEach((b) => b.addEventListener("click", () => {
+        Sound.click();
+        $$(".blog-filter .chip", body).forEach((c) => c.classList.toggle("on", c === b));
+        $$(".blog-card", body).forEach((c) => c.classList.toggle("hidden", !!b.dataset.kind && c.dataset.kind !== b.dataset.kind));
+      }));
+    }
+  });
+
   /* ================= Task Manager (skills) ================= */
   registerApp("skills", {
     title: "Task Manager — Skills", icon: "activity", color: "#ef4444", w: 600, h: 540,
@@ -216,7 +266,7 @@
     "contact.txt": () => `email: ${P.email}\n` + P.socials.map((s) => `${s.label.toLowerCase()}: ${s.url}`).join("\n"),
     "secret.txt": () => "You found the secret file. The secret is: I really like building things. Also try 'matrix'."
   };
-  const OPENABLE = ["readme", "projects", "skills", "mail", "music", "paint", "snake", "settings", "bin", "achievements", "terminal"];
+  const OPENABLE = ["readme", "projects", ...(BLOG ? ["blog"] : []), "skills", "mail", "music", "paint", "snake", "settings", "bin", "achievements", "terminal"];
 
   registerApp("terminal", {
     title: "Terminal", icon: "terminal-2", color: "#10b981", w: 680, h: 440, single: false,
@@ -240,6 +290,7 @@
   <span class="ok">whoami</span>       who is this person?
   <span class="ok">about</span>        open README
   <span class="ok">projects</span>     list my projects (try <span class="ok">projects nova</span>)
+  <span class="ok">blog</span>         my security write-ups
   <span class="ok">skills</span>       my tech stack
   <span class="ok">experience</span>   where I've worked
   <span class="ok">contact</span>      ways to reach me
@@ -261,6 +312,11 @@
             return open("projects", { project: p.id });
           }
           print(P.projects.map((p) => `<span class="ok">${esc(p.id.padEnd(14))}</span>${esc(p.tagline)}`).join("\n") + `\n<span class="dim">Type 'projects &lt;name&gt;' for details.</span>`);
+        },
+        blog: () => {
+          if (!BLOG) return print("blog: nothing published yet", "dim");
+          print(BLOG.posts.map((p) => `<span class="dim">${esc(p.date)}</span>  <a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.title)}</a>`).join("\n") + `\n<span class="dim">opening the Security Blog…</span>`);
+          open("blog");
         },
         skills: () => {
           const groups = [...new Set(P.skills.map((s) => s.group))];
